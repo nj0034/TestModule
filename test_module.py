@@ -4,87 +4,11 @@ from sailer.utils import *
 import random
 import time
 import re
+import urllib.parse
+import json
 
-XPATH_JSON = {
-    "meta": {
-        "site_name": "성균관대학교 홈페이지",
-        "site_url": "http://skku.edu",
-        "site_tyoe": "javascript",
-        "category": "category",
-        "version": "1"
-    },
-
-    "parser": {
-        "method": "url_based",
-        "version": "1",
-        "period": "15m",
-        "stop": "size",
-        "interval": "5-10"
-    },
-
-    "rule": {
-        "page_url": "http://www.skku.edu/new_home/campus/skk_comm/notice_list.jsp?page={page}&bCode=7&skey=BOARD_SUBJECT&keyword=",
-        "start_page": 1,
-        "page_increase": 1,
-        "properties": {
-            "title_url": {
-                "type": "url",
-                "xpath": '//*[@id="contents"]/table/tbody/tr[*]/td[2]/a',
-                "position": "",
-                "param_regex": "",
-                "base_url": "asdf{param}asdf"
-            },
-            "title": {
-                "type": "text",
-                "xpath": '//*[@id="contents"]/table[1]/tbody/tr[1]/td',
-                "position": "in",
-            },
-            "number": {
-                "type": "text",
-                "xpath": '//*[@id="contents"]/table[1]/tbody/tr[2]/td[2]',
-                "position": "in",
-            },
-            "date": {
-                "type": "date",
-                "xpath": '//*[@id="contents"]/table[1]/tbody/tr[3]/td[1]',
-                "format": "%Y.%m.%d %H:%M:%S",
-                "position": "in",
-            },
-            "writer": {
-                "type": "text",
-                "xpath": '//*[@id="contents"]/table[1]/tbody/tr[2]/td[1]',
-                "position": "in",
-            },
-            "hit": {
-                "type": "text",
-                "xpath": '//*[@id="contents"]/table[1]/tbody/tr[3]/td[2]',
-                "position": "in",
-            },
-            "content": {
-                "type": "content",
-                "xpath": '//*[@id="contents"]/div[1]',
-                "position": "in",
-            },
-            "img": {
-                "type": "image",
-                "xpath": '//*[@id="contents"]/div[*]/img',
-                "position": "in",
-            },
-            "attach": {
-                "type": "file",
-                "xpath": "//*[@id=\"contents\"]/div[2]/ul/li[*]/a",
-                "position": "in",
-                "base_url": "http://www.skku.edu/new_home/campus/skk_comm/notice_download_hp.jsp?userfile={}",
-                "param_regex": "'(.*)'",
-                "name_regex": "'(.*)'",
-                "HTML_xpath": "//*[@id=\"contents\"]/div[2]"
-            }
-        },
-        "post_processing": {
-
-        }
-    }
-}
+json_data = open('json\일반.json', encoding='UTF8').read()
+XPATH_JSON = json.loads(json_data)
 
 
 class TestModule(Sailer):
@@ -204,6 +128,9 @@ class TestModule(Sailer):
             }
         elif prop_type == 'date':
             date = self.xpath(xpath).text
+            date = date.replace('오전', 'AM')
+            date = date.replace('오후', 'PM')
+
             format = self.props[prop]['format']
             date = convert_datetime(date, format, '%Y-%m-%d %H:%M:%S')
             prop_json = {
@@ -221,19 +148,17 @@ class TestModule(Sailer):
             }
         elif prop_type == 'file':
             attach_url_list = list()
-            href_list = [xpath.get_attribute('href') for xpath in self.xpaths(xpath) if xpath]
-            print(href_list)
+            href_list = [urllib.parse.unquote(xpath.get_attribute('href')) for xpath in self.xpaths(xpath) if xpath]
 
             if self.props[prop]['param_regex']:
                 param_list = [re.findall(self.props[prop]['param_regex'], href) for href in href_list]
-                print(param_list)
 
                 for param in param_list:
-                    print(param)
-                    if isinstance(param, tuple):
-                        attach_url_list.append(self.props[prop]['base_url'].format(*param))
-                    else:
-                        attach_url_list.append(self.props[prop]['base_url'].format(param))
+                    # if isinstance(param, tuple):
+                    #     attach_url_list.append(self.props[prop]['base_url'].format(*param))
+                    # else:
+                    #     attach_url_list.append(self.props[prop]['base_url'].format(param))
+                    attach_url_list.append(self.props[prop]['base_url'].format(*param))
 
             else:
                 attach_url_list = href_list
