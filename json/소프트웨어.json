@@ -1,0 +1,75 @@
+{
+    "meta": {
+        "site_name": "소프트웨어대학",
+        "site_url": "http://cs.skku.edu/open/notice/list",
+        "site_type": "jquery",
+        "category": "소프트웨어대학",
+        "version": "1"
+    },
+
+    "parser": {
+        "method": "next_button",
+        "version": "1",
+        "period": "15m",
+        "stop": "size",
+        "interval": "5-10"
+    },
+
+    "rule": {
+        "page_url": "http://cs.skku.edu/open/notice/list",
+        "top_article_xpath": "//*[@id=\"boardList\"]/tbody/tr[1]",
+        "next_button_xpath": "//*[@id=\"next\"]",
+        "start_page": 0,
+        "page_increase": 1,
+        "properties": {
+            "title": {
+                "type": "text",
+                "xpath": "//*[@id=\"title\"]",
+                "position": "in"
+            },
+            "number": {
+                "type": "text",
+                "xpath": "//*[@id=\"views\"]",
+                "position": "in"
+            },
+            "date": {
+                "type": "date",
+                "xpath": "//*[@id=\"time\"]",
+                "format": "%Y-%m-%d",
+                "position": "in"
+            },
+            "writer": {
+                "type": "text",
+                "xpath": "//*[@id=\"name\"]",
+                "position": "in"
+            },
+            "hit": {
+                "type": "text",
+                "xpath": "//*[@id=\"views\"]",
+                "position": "in"
+            },
+            "content": {
+                "type": "content",
+                "xpath": "//*[@id=\"text\"]",
+                "position": "in"
+            },
+            "img": {
+                "type": "image",
+                "xpath": "//*[@id=\"text\"]/p[*]/img",
+                "position": "in"
+            },
+            "attach": {
+                "type": "file",
+                "xpath": "//*[@id=\"files\"]/div[*]/div/a",
+                "position": "in",
+                "base_url": "",
+                "param_regex": "",
+                "name_regex": "<b>(.*?)<\/b>",
+                "HTML_xpath": "//*[@id=\"files\"]"
+            }
+        },
+        "post_processing": {
+
+        }
+    }
+}

@@ -1,9 +1,9 @@
 {
     "meta": {
-        "site_name": "학부대학",
-        "site_url": "http://hakbu.skku.edu/hakbu/menu_7/sub_07_01.jsp?mode=list&board_no=107&pager.offset=0",
+        "site_name": "예술대학",
+        "site_url": "http://art.skku.edu/art/menu_4/sub4_1.jsp?mode=list&board_no=165&pager.offset=0",
         "site_type": "html",
-        "category": "학부대학",
+        "category": "예술대학",
         "version": "1"
     },
 
@@ -16,13 +16,13 @@
     },
 
     "rule": {
-        "page_url": "http://hakbu.skku.edu/hakbu/menu_7/sub_07_01.jsp?mode=list&board_no=107&pager.offset={page}0",
+        "page_url": "http://art.skku.edu/art/menu_4/sub4_1.jsp?mode=list&board_no=165&pager.offset={page}0",
         "start_page": 0,
         "page_increase": 1,
         "properties": {
             "title_url": {
                 "type": "url",
-                "xpath": "//*[@id=\"item_body\"]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div[2]/table/tbody/tr[*]/td[2]/a",
+                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[2]/table/tbody/tr[*]/td[2]/a",
                 "position": "",
                 "param_regex": "",
                 "base_url": "asdf{param}asdf"
