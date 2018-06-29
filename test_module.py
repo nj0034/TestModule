@@ -8,9 +8,9 @@ import urllib.parse
 import json
 from elasticsearch import Elasticsearch
 
-json_data = open('json\소프트웨어.json', encoding='UTF8').read()
+json_data = open('json\문과.json', encoding='UTF8').read()
 XPATH_JSON = json.loads(json_data)
-es = Elasticsearch('search-toast-rgeq2lspq63rey535bxmff5m4y.ap-northeast-2.es.amazonaws.com')
+es = Elasticsearch('https://search-toast-rgeq2lspq63rey535bxmff5m4y.ap-northeast-2.es.amazonaws.com')
 
 
 class TestModule(Sailer):
@@ -45,8 +45,8 @@ class TestModule(Sailer):
         # top_article_url = self.xpath(XPATH_JSON['top_article_xpath']).get_attribute('href')
         # self.go(top_article_url)
         self.wait_xpath(self.rule['top_article_xpath'])
-        # self.xpath(self.rule['top_article_xpath']).click()
-        self.go('http://cs.skku.edu/open/notice/view/2253')
+        self.xpath(self.rule['top_article_xpath']).click()
+        # self.go('http://cs.skku.edu/open/notice/view/2253')
 
         while (True):
             parsing_result_json_list = [{"url": self.current_url}]
@@ -54,7 +54,7 @@ class TestModule(Sailer):
             print(parsing_result_json_list)
 
             # es에 parsing_result_json_list 저장(top 글이면 저장 안함)
-            es.create(index="content", doc_type="_doc", id='test', body=parsing_result_json_list[0])
+            es.index(index="content", doc_type="_doc", body=parsing_result_json_list[0])
 
             next_button_url = self.xpath(self.rule['next_button_xpath']).get_attribute('href')
             if next_button_url:
@@ -100,7 +100,7 @@ class TestModule(Sailer):
 
         # es에 저장(top 글이면 저장 안함)
         for parsing_result_json in parsing_result_json_list:
-            es.index(index="content", doc_type="_doc", body=parsing_result_json, request_timeout=60)
+            es.index(index="content", doc_type="_doc", body=parsing_result_json)
             print(parsing_result_json)
 
         time_interval = [int(n) for n in self.parser['interval'].split('-')]

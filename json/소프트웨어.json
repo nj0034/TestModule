@@ -17,7 +17,7 @@
 
     "rule": {
         "page_url": "http://cs.skku.edu/open/notice/list",
-        "top_article_xpath": "//*[@id=\"boardList\"]/tbody/tr[1]",
+        "top_article_xpath": "//*[@id=\"boardList\"]/tbody/tr[1]/td[3]",
         "next_button_xpath": "//*[@id=\"next\"]",
         "start_page": 0,
         "page_increase": 1,

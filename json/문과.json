@@ -1,0 +1,75 @@
+{
+    "meta": {
+        "site_name": "문과대학",
+        "site_url": "http://liberalarts.skku.edu/liberal/menu_6/data_01.jsp?mode=list&board_no=229&pager.offset=0",
+        "site_type": "html",
+        "category": "문과대학",
+        "version": "1"
+    },
+
+    "parser": {
+        "method": "url_based",
+        "version": "1",
+        "period": "15m",
+        "stop": "size",
+        "interval": "5-10"
+    },
+
+    "rule": {
+        "page_url": "http://liberalarts.skku.edu/liberal/menu_6/data_01.jsp?mode=list&board_no=229&pager.offset={page}0",
+        "start_page": 0,
+        "page_increase": 1,
+        "properties": {
+            "title_url": {
+                "type": "url",
+                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[2]/table/tbody/tr[*]/td[2]/a",
+                "position": "",
+                "param_regex": "",
+                "base_url": ""
+            },
+            "title": {
+                "type": "text",
+                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[1]/td",
+                "position": "in"
+            },
+            "date": {
+                "type": "date",
+                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[2]",
+                "format": "%Y-%m-%d",
+                "position": "in"
+            },
+            "writer": {
+                "type": "text",
+                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[1]",
+                "position": "in"
+            },
+            "hit": {
+                "type": "text",
+                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[3]",
+                "position": "in"
+            },
+            "content": {
+                "type": "content",
+                "xpath": "//*[@id=\"article_text\"]",
+                "position": "in"
+            },
+            "img": {
+                "type": "image",
+                "xpath": "//*[@id=\"article_text\"]/p[*]/img",
+                "position": "in"
+            },
+            "attach": {
+                "type": "file",
+                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[3]/td/ul/li[*]/a",
+                "position": "in",
+                "base_url": "",
+                "param_regex": "",
+                "name_regex": "title=\"(.*) 다운로드\"",
+                "HTML_xpath": "//*[@id=\"jwxe_main_content\"]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div[1]/table/tbody/tr[3]/td/ul"
+            }
+        },
+        "post_processing": {
+
+        }
+    }
+}
