@@ -1,7 +1,7 @@
 {
     "meta": {
-        "site_name": "유학대학",
-        "site_url": "http://scos.skku.edu/scos/menu_4/sub_04_01_01.jsp?mode=list&board_no=69&pager.offset=0",
+        "site_name": "경제대학",
+        "site_url": "http://ecostat.skku.edu/ecostat/menu_6/sub6_1.jsp?mode=list&board_no=304&pager.offset=0",
         "site_type": "html",
         "category": "공지사항",
         "version": "1"
@@ -16,36 +16,36 @@
     },
 
     "rule": {
-        "page_url": "http://scos.skku.edu/scos/menu_4/sub_04_01_01.jsp?mode=list&board_no=69&pager.offset={page}0",
+        "page_url": "http://ecostat.skku.edu/ecostat/menu_6/sub6_1.jsp?mode=list&board_no=304&pager.offset={page}0",
         "start_page": 0,
         "page_increase": 1,
         "properties": {
             "title_url": {
                 "type": "url",
-                "xpath": "//*[@id=\"item_body\"]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div[2]/table/tbody/tr[*]/td[2]/a",
+                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[2]/table/tbody/tr[*]/td[2]/a",
                 "position": "",
                 "param_regex": "",
                 "base_url": ""
             },
             "title": {
                 "type": "text",
-                "xpath": "//*[@id=\"item_body\"]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div[1]/table/tbody/tr[1]/td",
+                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[1]/td",
                 "position": "in"
             },
             "date": {
                 "type": "date",
-                "xpath": "//*[@id=\"item_body\"]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div[1]/table/tbody/tr[2]/td[2]",
+                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[2]",
                 "format": "%Y-%m-%d",
                 "position": "in"
             },
             "writer": {
                 "type": "text",
-                "xpath": "//*[@id=\"item_body\"]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div[1]/table/tbody/tr[2]/td[1]",
+                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[1]",
                 "position": "in"
             },
             "hit": {
                 "type": "text",
-                "xpath": "//*[@id=\"item_body\"]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div[1]/table/tbody/tr[2]/td[3]",
+                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[3]",
                 "position": "in"
             },
             "content": {
@@ -60,12 +60,12 @@
             },
             "attach": {
                 "type": "file",
-                "xpath": "//*[@id=\"item_body\"]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div[1]/table/tbody/tr[3]/td/ul/li[*]/a",
+                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[3]/td/ul/li[*]/a",
                 "position": "in",
                 "base_url": "",
                 "param_regex": "",
                 "name_regex": "title=\"(.*) 다운로드\"",
-                "HTML_xpath": "//*[@id=\"item_body\"]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div[1]/table/tbody/tr[3]/td/ul"
+                "HTML_xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[3]/td/ul"
             }
         },
         "post_processing": {

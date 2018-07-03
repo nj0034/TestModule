@@ -1,7 +1,7 @@
 {
     "meta": {
-        "site_name": "문과대학",
-        "site_url": "http://liberalarts.skku.edu/liberal/menu_6/data_01.jsp?mode=list&board_no=229&pager.offset=0",
+        "site_name": "정보통신대학",
+        "site_url": "http://icc.skku.ac.kr/icc_new/board_list_square?listPage=1&boardName=board_notice&field=subject&keyword=",
         "site_type": "html",
         "category": "공지사항",
         "version": "1"
@@ -16,56 +16,52 @@
     },
 
     "rule": {
-        "page_url": "http://liberalarts.skku.edu/liberal/menu_6/data_01.jsp?mode=list&board_no=229&pager.offset={page}0",
-        "start_page": 0,
+        "page_url": "http://icc.skku.ac.kr/icc_new/board_list_square?listPage={page}&boardName=board_notice&field=subject&keyword=",
+        "start_page": 1,
         "page_increase": 1,
         "properties": {
             "title_url": {
                 "type": "url",
-                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[2]/table/tbody/tr[*]/td[2]/a",
+                "xpath": "//*[@id=\"sub-container\"]/div[3]/table/tbody/tr[*]/td[3]/a",
                 "position": "",
                 "param_regex": "",
                 "base_url": ""
             },
             "title": {
                 "type": "text",
-                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[1]/td",
+                "xpath": "//*[@id=\"subject\"]",
                 "position": "in"
             },
             "date": {
                 "type": "date",
-                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[2]",
+                "xpath": "//*[@id=\"time\"]",
                 "format": "%Y-%m-%d",
                 "position": "in"
             },
             "writer": {
                 "type": "text",
-                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[1]",
-                "position": "in"
-            },
-            "hit": {
-                "type": "text",
-                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[3]",
+                "xpath": "//*[@id=\"writer\"]",
                 "position": "in"
             },
             "content": {
                 "type": "content",
-                "xpath": "//*[@id=\"article_text\"]",
+                "xpath": "//*[@id=\"content\"]",
                 "position": "in"
             },
             "img": {
                 "type": "image",
-                "xpath": "//*[@id=\"article_text\"]/p[*]/img",
+                "xpath": "//*[@id=\"content\"]/p[*]/img",
                 "position": "in"
             },
             "attach": {
                 "type": "file",
-                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[3]/td/ul/li[*]/a",
+                "xpath": "//*[@id=\"sub-container\"]/div[3]/table/tbody/tr[*]/td[2]/a",
                 "position": "in",
                 "base_url": "",
                 "param_regex": "",
-                "name_regex": "title=\"(.*) 다운로드\"",
-                "HTML_xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[3]/td/ul"
+                "name_regex": "\\s*(.*)\\s\\(\\d+ Bytes",
+                "HTML_xpath": "//*[@id=\"sub-container\"]/div[3]/table/tbody/tr[*]/td[2]/a",
+                "splited": true
             }
         },
         "post_processing": {

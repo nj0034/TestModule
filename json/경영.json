@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "site_name": "경영대학",
+    "site_url": "https://biz.skku.edu/kr/boardList.do?bbsId=BBSMSTR_000000000001",
+    "site_type": "javascript",
+    "category": "공지사항",
+    "version": "1"
+  },
+  "parser": {
+    "method": "url_based",
+    "version": "1",
+    "period": "15m",
+    "stop": "size",
+    "interval": "5-10"
+  },
+  "rule": {
+    "page_url": "https://biz.skku.edu/kr/boardList.do?bbsId=BBSMSTR_000000000001&pageIndex={page}",
+    "start_page": 1,
+    "page_increase": 1,
+    "properties": {
+      "title_url": {
+        "type": "url",
+        "xpath": "//*[@id=\"container\"]/div[3]/div[1]/ul/li[*]/strong/a",
+        "position": "",
+        "param_regex": "'(.*)'",
+        "base_url": "https://biz.skku.edu/kr/board.do?bbsId=BBSMSTR_000000000001&nttId={}"
+      },
+      "title": {
+        "type": "text",
+        "xpath": "//*[@id=\"container\"]/div[3]/div[1]/div[1]/h2",
+        "position": "in"
+      },
+      "date": {
+        "type": "date",
+        "xpath": "//*[@id=\"container\"]/div[3]/div[1]/div[2]",
+        "regex": "작성일<\/span>(.*)<span>",
+        "format": "%Y-%m-%d",
+        "position": "in"
+      },
+      "content": {
+        "type": "content",
+        "xpath": "",
+        "class_name": "view_content",
+        "position": "in"
+      },
+      "img": {
+        "type": "image",
+        "xpath": "//*[@id=\"container\"]/div[3]/div[1]/div[*]/p[*]/img",
+        "position": "in"
+      },
+      "attach": {
+        "type": "file",
+        "xpath": "//*[@id=\"container\"]/div[3]/div[1]/div[3]/a",
+        "position": "in",
+        "base_url": "https://biz.skku.edu/cmm/fms/FileDown.do?atchFileId={0}&fileSn={1}",
+        "param_regex": "'(?P<atchFileId>.*)','(?P<fileSn>.*)'",
+        "name_regex": "fn_egov_downFile[^>]*>\\s*(.+?)\\s*&nbsp;",
+        "HTML_xpath": "//*[@id=\"container\"]/div[3]/div[1]/div[3]"
+      }
+    },
+    "post_processing": {
+    }
+  }
+}

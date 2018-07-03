@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "site_name": "약학대학",
+    "site_url": "http://pharm.skku.edu/board/board.jsp",
+    "site_type": "javascript",
+    "category": "공지사항",
+    "version": "1"
+  },
+  "parser": {
+    "method": "url_based",
+    "version": "1",
+    "period": "15m",
+    "stop": "size",
+    "interval": "5-10"
+  },
+  "rule": {
+    "page_url": "http://pharm.skku.edu/board/board.jsp?catg=notice&curPage={page}",
+    "start_page": 1,
+    "page_increase": 1,
+    "properties": {
+      "title_url": {
+        "type": "url",
+        "xpath": "//*[@id=\"content\"]/div/div[2]/div/div/div[2]/table/tbody/tr[*]/td[2]/a",
+        "position": "",
+        "param_regex": "goView\\((\\d+)\\)",
+        "base_url": "http://pharm.skku.edu/board/view.jsp?curNum={}"
+      },
+      "title": {
+        "type": "text",
+        "xpath": "//*[@id=\"content\"]/div/div[2]/div/div/div[1]/table/tbody/tr[1]/th",
+        "position": "in"
+      },
+      "date": {
+        "type": "date",
+        "xpath": "//*[@id=\"container\"]/div[3]/div[1]/div[2]",
+        "regex": "날짜.*>(\\d+\\-\\d+\\-\\d+)",
+        "format": "%Y-%m-%d",
+        "position": "in"
+      },
+      "content": {
+        "type": "content",
+        "xpath": "//*[@id=\"contents\"]",
+        "position": "in"
+      },
+      "img": {
+        "type": "image",
+        "xpath": "//*[@id=\"contents\"]/p[*]/img",
+        "position": "in"
+      },
+      "attach": {
+        "type": "file",
+        "xpath": "//*[@id=\"content\"]/div/div[2]/div/div/div[1]/table/tbody/tr[3]/td/a",
+        "position": "in",
+        "base_url": "",
+        "param_regex": "",
+        "name_regex": "<a.*>(.*)<\/a>",
+        "HTML_xpath": "//*[@id=\"content\"]/div/div[2]/div/div/div[1]/table/tbody/tr[3]/td"
+      }
+    },
+    "post_processing": {
+    }
+  }
+}

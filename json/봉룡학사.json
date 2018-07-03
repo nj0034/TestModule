@@ -1,0 +1,65 @@
+{
+  "meta": {
+    "site_name": "봉룡학사",
+    "site_url": "https://dorm.skku.edu/skku/notice/notice_all.jsp",
+    "site_type": "html",
+    "category": "공지사항",
+    "version": "1"
+  },
+  "parser": {
+    "method": "url_based",
+    "version": "1",
+    "period": "15m",
+    "stop": "size",
+    "interval": "5-10"
+  },
+  "rule": {
+    "page_url_list": [
+      "https://dorm.skku.edu/skku/notice/notice_comm.jsp?mode=list&default%3Acategory_id=10&board_no=16&pager.offset={page}0",
+      "https://dorm.skku.edu/skku/notice/notice_res.jsp?mode=list&default%3Acategory_id=11&board_no=16&pager.offset={page}0"
+    ],
+    "start_page": 0,
+    "page_increase": 3,
+    "properties": {
+      "title_url": {
+        "type": "url",
+        "xpath": "//*[@id=\"item_body\"]/div[3]/div/div[2]/div[1]/div[2]/div[2]/div/div/div[2]/table/tbody/tr[*]/td[2]/a",
+        "position": "",
+        "param_regex": "",
+        "base_url": ""
+      },
+      "title": {
+        "type": "text",
+        "xpath": "//*[@id=\"item_body\"]/div[3]/div/div[2]/div[1]/div[2]/div[2]/div/div/div[1]/table/tbody/tr[1]/td",
+        "position": "in"
+      },
+      "date": {
+        "type": "date",
+        "xpath": "//*[@id=\"item_body\"]/div[3]/div/div[2]/div[1]/div[2]/div[2]/div/div/div[1]/table/tbody/tr[2]/td/span[4]",
+        "format": "%Y-%m-%d",
+        "position": "in"
+      },
+      "content": {
+        "type": "content",
+        "xpath": "//*[@id=\"article_text\"]",
+        "position": "in"
+      },
+      "img": {
+        "type": "image",
+        "xpath": "//*[@id=\"article_text\"]/p[*]/img",
+        "position": "in"
+      },
+      "attach": {
+        "type": "file",
+        "xpath": "//*[@id=\"item_body\"]/div[3]/div/div[2]/div[1]/div[2]/div[2]/div/div/div[1]/table/tbody/tr[3]/td/div[*]/a",
+        "position": "in",
+        "base_url": "",
+        "param_regex": "",
+        "name_regex": "title=\"(.*) 다운로드\"",
+        "HTML_xpath": "//*[@id=\"item_body\"]/div[3]/div/div[2]/div[1]/div[2]/div[2]/div/div/div[1]/table/tbody/tr[3]/td"
+      }
+    },
+    "post_processing": {
+    }
+  }
+}

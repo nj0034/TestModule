@@ -1,0 +1,70 @@
+{
+    "meta": {
+        "site_name": "의과대학",
+        "site_url": "http://www.skkumed.ac.kr/notice.asp?keyword=&startpage=1&bcode=nt&pg=1",
+        "site_type": "html",
+        "category": "공지사항",
+        "version": "1"
+    },
+
+    "parser": {
+        "method": "url_based",
+        "version": "1",
+        "period": "15m",
+        "stop": "size",
+        "interval": "5-10"
+    },
+
+    "rule": {
+        "page_url": "http://www.skkumed.ac.kr/notice.asp?keyword=&startpage=1&bcode=nt&pg={page}",
+        "start_page": 1,
+        "page_increase": 1,
+        "properties": {
+            "title_url": {
+                "type": "url",
+                "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[4]/td/table/tbody/tr[*]/td[3]/div/a[1]",
+                "position": "",
+                "param_regex": "",
+                "base_url": ""
+            },
+            "title": {
+                "type": "text",
+                "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[2]/td[3]",
+                "position": "in"
+            },
+            "date": {
+                "type": "date",
+                "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[4]/td[7]/div",
+                "format": "%Y-%m-%d %p %I:%M:%S",
+                "position": "in"
+            },
+            "writer": {
+                "type": "text",
+                "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[2]/td[3]",
+                "position": "in"
+            },
+            "content": {
+                "type": "content",
+                "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[8]/td",
+                "position": "in"
+            },
+            "img": {
+                "type": "image",
+                "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[8]/td/img",
+                "position": "in"
+            },
+            "attach": {
+                "type": "file",
+                "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[6]/td[3]/a",
+                "position": "in",
+                "base_url": "",
+                "param_regex": "",
+                "name_regex": "<b>(.*)\\s&nbsp",
+                "HTML_xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[6]/td[3]"
+            }
+        },
+        "post_processing": {
+
+        }
+    }
+}

@@ -11,7 +11,14 @@ class Sailer:
         self._timeout = 10
 
         # initialize driver
-        self.driver = webdriver.PhantomJS(executable_path=r'C:\Users\nj\Downloads\phantomjs-2.1.1-windows\bin/phantomjs')
+        # self.driver = webdriver.PhantomJS(executable_path=r'C:\Users\nj\Downloads\phantomjs-2.1.1-windows\bin/phantomjs')
+
+        self.options = webdriver.ChromeOptions()
+        self.options.add_argument('headless')
+        self.options.add_argument('window-size=1920x1080')
+        self.options.add_argument('disable-gpu')
+
+        self.driver = webdriver.Chrome(executable_path=r'C:\Users\nj\Downloads/chromedriver')
         self.driver.implicitly_wait(self.timeout)
 
         # get sentry logger
