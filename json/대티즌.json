@@ -1,0 +1,82 @@
+{
+    "meta": {
+        "site_name": "대티즌",
+        "site_url": "http://www.detizen.com/contest/?PC=1",
+        "site_type": "html",
+        "category": "대외활동",
+        "version": "1"
+    },
+
+    "parser": {
+        "method": "url_based",
+        "version": "1",
+        "period": "15m",
+        "stop": "size",
+        "interval": "5-10"
+    },
+
+    "rule": {
+        "page_url": "http://www.detizen.com/contest/?PC={page}",
+        "start_page": 1,
+        "page_increase": 1,
+        "properties": {
+            "title_url": {
+                "type": "url",
+                "xpath": "//*[@id=\"Main\"]/section[2]/div/ul/li[*]/div[1]/h4/a[1]",
+                "position": "",
+                "param_regex": "",
+                "base_url": ""
+            },
+            "title": {
+                "type": "text",
+                "xpath": "//*[@id=\"Main\"]/section[2]/header/h3/span[1]",
+                "position": "in"
+            },
+            "host": {
+                "type": "text",
+                "xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[2]/div[2]/table/tbody/tr[2]/td",
+                "position": "in"
+            },
+            "start_datetime": {
+                "type": "date",
+                "xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[2]/div[2]/table/tbody",
+                "regex": "(\\d+\\.\\d+\\.\\d+)\\s~",
+                "format": "%Y.%m.%d",
+                "position": "in"
+            },
+            "end_datetime": {
+                "type": "date",
+                "xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[2]/div[2]/table/tbody",
+                "regex": "~\\s(\\d+\\.\\d+\\.\\d+)",
+                "format": "%Y.%m.%d",
+                "position": "in"
+            },
+            "content": {
+                "type": "content",
+                "xpath": "//*[@id=\"Main\"]/section[2]/div/div/ul",
+                "position": "in"
+            },
+            "target": {
+                "type": "text",
+                "xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[2]/div[2]/table/tbody",
+                "regex": "대상.*\\s*<td>(.*)<\/td>",
+                "position": "in"
+            },
+            "benefit": {
+                "type": "text",
+                "xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[2]/div[2]/table/tbody",
+                "regex": "특전.*\\s*<td>(.*)<\/td>",
+                "position": "in"
+            },
+            "poster": {
+                "type": "image",
+                "xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[2]/div[1]/img",
+                "position": "in"
+            }
+
+        },
+        "post_processing": {
+
+        }
+    }
+}

@@ -7,7 +7,7 @@ import urllib.parse
 import json
 from elasticsearch import Elasticsearch
 
-json_data = open('json\경영.json', encoding='UTF8').read()
+json_data = open('json\대티즌.json', encoding='UTF8').read()
 XPATH_JSON = json.loads(json_data)
 es = Elasticsearch('https://search-toast-rgeq2lspq63rey535bxmff5m4y.ap-northeast-2.es.amazonaws.com')
 
@@ -235,9 +235,14 @@ class TestModule(Sailer):
 
         return prop_json
 
-    @staticmethod
-    def parsing_regex_prop(prop, regex, html):
-        prop_json = {prop: re.compile(regex).search(html).group(1)}
+    def parsing_regex_prop(self, prop, regex, html):
+        prop_data = re.compile(regex).search(html).group(1)
+
+        if self.props[prop]['type'] == 'date':
+            format = self.props[prop]['format']
+            prop_data = convert_datetime(prop_data, format, '%Y-%m-%d %H:%M:%S')
+
+        prop_json = {prop: prop_data}
         print(prop_json)
         return prop_json
 
