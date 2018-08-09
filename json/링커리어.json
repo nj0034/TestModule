@@ -1,34 +1,32 @@
 {
   "meta": {
-    "site_name": "대티즌",
-    "site_url": "http://www.detizen.com",
+    "site_name": "링커리어",
+    "site_url": "http://linkareer.com",
     "site_type": "html",
     "type": "공모전_대외활동",
     "version": "1",
     "ES_index": "activity"
   },
   "parser": {
-    "method": "url_based",
+    "method": "scroll_down",
     "version": "1",
     "period": "15m",
     "stop": "size",
     "interval": "5-10"
   },
   "rule": {
-    "page_url_list": ["http://www.detizen.com/activity/?PC={page}", "http://www.detizen.com/contest/?PC={page}"],
-    "start_page": 1,
-    "page_increase": 1,
+    "page_url_list": ["http://linkareer.com/list/contest", "http://linkareer.com/list/activity"],
     "properties": {
       "title_url": {
         "type": "url",
-        "xpath": "//*[@id=\"Main\"]/section[2]/div/ul/li[*]/div[1]/h4/a[1]",
+        "xpath": "/html/body/div[5]/div[3]/a[*]",
         "position": "",
         "param_regex": "",
         "base_url": ""
       },
       "title": {
         "type": "text",
-        "xpath": "//*[@id=\"Main\"]/section[2]/header/h3/span[1]",
+        "class_name": "activity-name",
         "position": "in"
       },
       "host": {

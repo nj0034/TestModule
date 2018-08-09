@@ -3,7 +3,8 @@
     "site_name": "경영대학",
     "site_url": "https://biz.skku.edu/kr/boardList.do?bbsId=BBSMSTR_000000000001",
     "site_type": "javascript",
-    "category": "공지사항",
+    "type": "공지사항",
+    "ES_index": "skku-notice",
     "version": "1"
   },
   "parser": {
@@ -30,7 +31,7 @@
         "xpath": "//*[@id=\"container\"]/div[3]/div[1]/div[1]/h2",
         "position": "in"
       },
-      "date": {
+      "created_datetime": {
         "type": "date",
         "xpath": "//*[@id=\"container\"]/div[3]/div[1]/div[2]",
         "regex": "작성일<\/span>(.*)<span>",

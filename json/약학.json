@@ -3,7 +3,7 @@
     "site_name": "약학대학",
     "site_url": "http://pharm.skku.edu/board/board.jsp",
     "site_type": "javascript",
-    "category": "공지사항",
+    "type": "공지사항","ES_index": "skku-notice",
     "version": "1"
   },
   "parser": {
@@ -30,7 +30,7 @@
         "xpath": "//*[@id=\"content\"]/div/div[2]/div/div/div[1]/table/tbody/tr[1]/th",
         "position": "in"
       },
-      "date": {
+      "created_datetime": {
         "type": "date",
         "xpath": "//*[@id=\"container\"]/div[3]/div[1]/div[2]",
         "regex": "날짜.*>(\\d+\\-\\d+\\-\\d+)",

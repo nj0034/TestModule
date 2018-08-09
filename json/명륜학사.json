@@ -3,7 +3,8 @@
     "site_name": "명륜학사",
     "site_url": "https://dorm.skku.edu/skku_seoul/notice/notice_all.jsp?mode=list&search%3Asearch_val%3Asearch_or=&search%3Asearch_key%3Asearch_or=article_title&search%3Asearch_category%3Acategory=104&search%3Asearch_key2%3Asearch_or=article_text&board_no=78&pager.offset=0",
     "site_type": "html",
-    "category": "공지사항",
+    "type": "공지사항",
+    "ES_index": "skku-notice",
     "version": "1"
   },
   "parser": {
@@ -30,7 +31,7 @@
         "xpath": "//*[@id=\"item_body\"]/div[3]/div/div[2]/div[1]/div[2]/div[2]/div/div[1]/table/tbody/tr[1]/td",
         "position": "in"
       },
-      "date": {
+      "created_datetime": {
         "type": "date",
         "xpath": "//*[@id=\"item_body\"]/div[3]/div/div[2]/div[1]/div[2]/div[2]/div/div[1]/table/tbody/tr[2]/td/span[4]",
         "format": "%Y-%m-%d",

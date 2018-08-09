@@ -3,7 +3,7 @@
         "site_name": "정보통신대학",
         "site_url": "http://icc.skku.ac.kr/icc_new/board_list_square?listPage=1&boardName=board_notice&field=subject&keyword=",
         "site_type": "html",
-        "category": "공지사항",
+        "type": "공지사항","ES_index": "skku-notice",
         "version": "1"
     },
 
@@ -32,7 +32,7 @@
                 "xpath": "//*[@id=\"subject\"]",
                 "position": "in"
             },
-            "date": {
+            "created_datetime": {
                 "type": "date",
                 "xpath": "//*[@id=\"time\"]",
                 "format": "%Y-%m-%d",

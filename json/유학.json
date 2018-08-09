@@ -3,7 +3,7 @@
         "site_name": "유학대학",
         "site_url": "http://scos.skku.edu/scos/menu_4/sub_04_01_01.jsp?mode=list&board_no=69&pager.offset=0",
         "site_type": "html",
-        "category": "공지사항",
+        "type": "공지사항","ES_index": "skku-notice",
         "version": "1"
     },
 
@@ -32,7 +32,7 @@
                 "xpath": "//*[@id=\"item_body\"]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div[1]/table/tbody/tr[1]/td",
                 "position": "in"
             },
-            "date": {
+            "created_datetime": {
                 "type": "date",
                 "xpath": "//*[@id=\"item_body\"]/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div[1]/table/tbody/tr[2]/td[2]",
                 "format": "%Y-%m-%d",

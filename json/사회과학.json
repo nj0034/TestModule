@@ -3,7 +3,8 @@
         "site_name": "사회과학대학",
         "site_url": "http://sscience.skku.edu/sscience/menu_4/sub4_1.jsp?mode=list&board_no=219&pager.offset=0",
         "site_type": "html",
-        "category": "공지사항",
+        "type": "공지사항",
+        "ES_index": "skku-notice",
         "version": "1"
     },
 
@@ -32,7 +33,7 @@
                 "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[1]/td",
                 "position": "in"
             },
-            "date": {
+            "created_datetime": {
                 "type": "date",
                 "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[2]",
                 "format": "%Y-%m-%d",

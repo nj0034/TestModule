@@ -3,7 +3,7 @@
         "site_name": "성균관대학교 일반",
         "site_url": "http://www.skku.edu/new_home/campus/skk_comm/notice_list.jsp?bName=BOARD_NEWS&bCode=2",
         "site_type": "javascript",
-        "category": "공지사항",
+        "type": "공지사항","ES_index": "skku-notice",
         "version": "1"
     },
 
@@ -37,7 +37,7 @@
                 "xpath": "//*[@id=\"contents\"]/table[1]/tbody/tr[2]/td[2]",
                 "position": "in"
             },
-            "date": {
+            "created_datetime": {
                 "type": "date",
                 "xpath": "//*[@id=\"contents\"]/table[1]/tbody/tr[3]/td[1]",
                 "format": "%Y.%m.%d %H:%M:%S",

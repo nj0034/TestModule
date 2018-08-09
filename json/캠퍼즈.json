@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "site_name": "캠퍼즈",
+    "site_url": "http://www.campuz.net/",
+    "site_type": "html",
+    "type": "공모전_대외활동",
+    "version": "1",
+    "ES_index": "activity"
+  },
+  "parser": {
+    "method": "url_based",
+    "version": "1",
+    "period": "15m",
+    "stop": "size",
+    "interval": "5-10"
+  },
+  "rule": {
+    "page_url_list": ["http://www.campuz.net/index.php?mid=activity&listStyle=list&page={page}", "http://www.campuz.net/index.php?mid=ucontest&listStyle=list&page={page}"],
+    "start_page": 1,
+    "page_increase": 1,
+    "properties": {
+      "title_url": {
+        "type": "url",
+        "html_class_name": "bd_lst",
+        "regex": "class=\"title\".*\\s*<a href=\"(.*?)\"\\s"
+      },
+      "title": {
+        "type": "text",
+        "html_class_name": "et_vars",
+        "regex": "제목.*\\s*<td>(.*?)<\/td>",
+        "position": "in"
+      },
+      "host": {
+        "type": "text",
+        "html_class_name": "et_vars",
+        "regex": "주최.*\\s*<td>(.*?)<\/td>",
+        "position": "in"
+      },
+      "start_datetime": {
+        "type": "date",
+        "html_class_name": "et_vars",
+        "regex": "모집시작.*\\s*<td>(.*?)<\/td>",
+        "format": "%Y-%m-%d",
+        "position": "in"
+      },
+      "end_datetime": {
+        "type": "date",
+        "html_class_name": "et_vars",
+        "regex": "모집마감.*\\s*<td>(.*?)<\/td>",
+        "format": "%Y-%m-%d",
+        "position": "in"
+      },
+      "created_datetime": {
+        "type": "date",
+        "class_name": "date",
+        "format": "%Y.%m.%d %H:%M",
+        "position": "in"
+      },
+      "content": {
+        "type": "content",
+        "class_name": "xe_content",
+        "position": "in"
+      },
+      "poster": {
+        "type": "poster",
+        "html_class_name": "xe_content",
+        "regex": "<img src=\"(.*?)\"",
+        "position": "in"
+      },
+      "home_url": {
+        "type": "text",
+        "html_class_name": "et_vars",
+        "regex": "홈페이지.*\\s*<td><a href=\"(.*?)<\/a>",
+        "position": "in"
+      }
+    },
+    "post_processing": {}
+  }
+}

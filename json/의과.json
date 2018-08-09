@@ -3,7 +3,7 @@
         "site_name": "의과대학",
         "site_url": "http://www.skkumed.ac.kr/notice.asp?keyword=&startpage=1&bcode=nt&pg=1",
         "site_type": "html",
-        "category": "공지사항",
+        "type": "공지사항","ES_index": "skku-notice",
         "version": "1"
     },
 
@@ -32,7 +32,7 @@
                 "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[2]/td[3]",
                 "position": "in"
             },
-            "date": {
+            "created_datetime": {
                 "type": "date",
                 "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[4]/td[7]/div",
                 "format": "%Y-%m-%d %p %I:%M:%S",

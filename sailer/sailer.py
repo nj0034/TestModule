@@ -16,9 +16,9 @@ class Sailer:
         self.options = webdriver.ChromeOptions()
         self.options.add_argument('headless')
         self.options.add_argument('window-size=1920x1080')
-        self.options.add_argument('disable-gpu')
+        # self.options.add_argument('disable-gpu')
 
-        self.driver = webdriver.Chrome(executable_path=r'C:\Users\nj\Downloads/chromedriver')
+        self.driver = webdriver.Chrome(executable_path=r'C:\Users\nj\Downloads/chromedriver', options=self.options)
         self.driver.implicitly_wait(self.timeout)
 
         # get sentry logger

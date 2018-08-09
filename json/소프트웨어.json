@@ -3,7 +3,8 @@
         "site_name": "소프트웨어대학",
         "site_url": "http://cs.skku.edu/open/notice/list",
         "site_type": "jquery",
-        "category": "공지사항",
+        "type": "공지사항",
+        "ES_index": "skku-notice",
         "version": "1"
     },
 
@@ -27,12 +28,7 @@
                 "xpath": "//*[@id=\"title\"]",
                 "position": "in"
             },
-            "number": {
-                "type": "text",
-                "xpath": "//*[@id=\"views\"]",
-                "position": "in"
-            },
-            "date": {
+            "created_datetime": {
                 "type": "date",
                 "xpath": "//*[@id=\"time\"]",
                 "format": "%Y-%m-%d",
@@ -41,11 +37,6 @@
             "writer": {
                 "type": "text",
                 "xpath": "//*[@id=\"name\"]",
-                "position": "in"
-            },
-            "hit": {
-                "type": "text",
-                "xpath": "//*[@id=\"views\"]",
                 "position": "in"
             },
             "content": {

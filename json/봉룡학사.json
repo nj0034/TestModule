@@ -3,7 +3,8 @@
     "site_name": "봉룡학사",
     "site_url": "https://dorm.skku.edu/skku/notice/notice_all.jsp",
     "site_type": "html",
-    "category": "공지사항",
+    "type": "공지사항",
+    "ES_index": "skku-notice",
     "version": "1"
   },
   "parser": {
@@ -33,7 +34,7 @@
         "xpath": "//*[@id=\"item_body\"]/div[3]/div/div[2]/div[1]/div[2]/div[2]/div/div/div[1]/table/tbody/tr[1]/td",
         "position": "in"
       },
-      "date": {
+      "created_datetime": {
         "type": "date",
         "xpath": "//*[@id=\"item_body\"]/div[3]/div/div[2]/div[1]/div[2]/div[2]/div/div/div[1]/table/tbody/tr[2]/td/span[4]",
         "format": "%Y-%m-%d",

@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "site_name": "all",
+    "site_url": "https://www.skku.edu/skku/campus/skk_comm/notice01.do",
+    "site_type": "html",
+    "type": "공지사항",
+    "ES_index": "skku-notice",
+    "version": "1"
+  },
+  "parser": {
+    "method": "url_based",
+    "version": "1",
+    "period": "15m",
+    "stop": "size",
+    "interval": "5-10"
+  },
+  "rule": {
+    "page_url": "https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=list&&articleLimit=10&article.offset={page}0",
+    "start_page": 0,
+    "page_increase": 1,
+    "properties": {
+      "title_url": {
+        "type": "url",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div/div[1]/div[2]/table/tbody/tr[*]/td[2]/a",
+        "position": ""
+      },
+      "title": {
+        "type": "text",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div/div/div/table[1]/thead/tr/th/em",
+        "position": "in"
+      },
+      "created_datetime": {
+        "type": "date",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div/div/div/table[1]/thead/tr/th/span[2]",
+        "format": "%Y.%m.%d",
+        "position": "in"
+      },
+      "content": {
+        "type": "content",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div/div/div/table[1]/tbody/tr/td/dl/dd",
+        "position": "in"
+      },
+      "img": {
+        "type": "image",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div/div/div/table[1]/tbody/tr/td/dl/dd/img[*]",
+        "position": "in"
+      },
+      "attach": {
+        "type": "file",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div/div/div/table[1]/tbody/tr/td/div/div[2]/ul/li[2]/div/form/fieldset/ul[1]/li[*]/a",
+        "position": "in",
+        "name_regex": "<a.*\\s*(.*)\\s*<\/a>",
+        "HTML_xpath": "//*[@id=\"jwxe_main_content\"]/div/div/div/div/table[1]/tbody/tr/td/div/div[2]/ul/li[2]/div/form/fieldset/ul[1]"
+      }
+    },
+    "post_processing": {
+    }
+  }
+}

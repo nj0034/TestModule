@@ -1,75 +1,73 @@
 {
-    "meta": {
-        "site_name": "스포츠과학대학",
-        "site_url": "http://sport.skku.edu/sports/menu_4/sub4_1.jsp?mode=list&board_no=824&pager.offset=0",
-        "site_type": "html",
-        "category": "공지사항",
-        "version": "1"
+  "meta": {
+    "site_name": "스포츠과학대학",
+    "site_url": "http://sport.skku.edu/sports/menu_4/sub4_1.jsp?mode=list&board_no=824&pager.offset=0",
+    "site_type": "html",
+    "type": "공지사항",
+    "ES_index": "skku-notice",
+    "version": "1"
+  },
+  "parser": {
+    "method": "url_based",
+    "version": "1",
+    "period": "15m",
+    "stop": "size",
+    "interval": "5-10"
+  },
+  "rule": {
+    "page_url": "http://sport.skku.edu/sports/menu_4/sub4_1.jsp?mode=list&board_no=824&pager.offset={page}0",
+    "start_page": 0,
+    "page_increase": 1,
+    "properties": {
+      "title_url": {
+        "type": "url",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[2]/table/tbody/tr[*]/td[2]/a",
+        "position": "",
+        "param_regex": "",
+        "base_url": ""
+      },
+      "title": {
+        "type": "text",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[1]/td",
+        "position": "in"
+      },
+      "created_datetime": {
+        "type": "date",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[2]",
+        "format": "%Y-%m-%d",
+        "position": "in"
+      },
+      "writer": {
+        "type": "text",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[1]",
+        "position": "in"
+      },
+      "hit": {
+        "type": "text",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[3]",
+        "position": "in"
+      },
+      "content": {
+        "type": "content",
+        "xpath": "//*[@id=\"article_text\"]",
+        "position": "in"
+      },
+      "img": {
+        "type": "image",
+        "xpath": "//*[@id=\"article_text\"]/p[*]/img",
+        "position": "in"
+      },
+      "attach": {
+        "type": "file",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[3]/td/ul/li[*]/a",
+        "position": "in",
+        "base_url": "",
+        "param_regex": "",
+        "name_regex": "title=\"(.*) 다운로드\"",
+        "HTML_xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[3]/td/ul"
+      }
     },
-
-    "parser": {
-        "method": "url_based",
-        "version": "1",
-        "period": "15m",
-        "stop": "size",
-        "interval": "5-10"
-    },
-
-    "rule": {
-        "page_url": "http://sport.skku.edu/sports/menu_4/sub4_1.jsp?mode=list&board_no=824&pager.offset={page}0",
-        "start_page": 0,
-        "page_increase": 1,
-        "properties": {
-            "title_url": {
-                "type": "url",
-                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[2]/table/tbody/tr[*]/td[2]/a",
-                "position": "",
-                "param_regex": "",
-                "base_url": ""
-            },
-            "title": {
-                "type": "text",
-                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[1]/td",
-                "position": "in"
-            },
-            "date": {
-                "type": "date",
-                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[2]",
-                "format": "%Y-%m-%d",
-                "position": "in"
-            },
-            "writer": {
-                "type": "text",
-                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[1]",
-                "position": "in"
-            },
-            "hit": {
-                "type": "text",
-                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[3]",
-                "position": "in"
-            },
-            "content": {
-                "type": "content",
-                "xpath": "//*[@id=\"article_text\"]",
-                "position": "in"
-            },
-            "img": {
-                "type": "image",
-                "xpath": "//*[@id=\"article_text\"]/p[*]/img",
-                "position": "in"
-            },
-            "attach": {
-                "type": "file",
-                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[3]/td/ul/li[*]/a",
-                "position": "in",
-                "base_url": "",
-                "param_regex": "",
-                "name_regex": "title=\"(.*) 다운로드\"",
-                "HTML_xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[3]/td/ul"
-            }
-        },
-        "post_processing": {
-
-        }
+    "post_processing": {
     }
+  }
 }
