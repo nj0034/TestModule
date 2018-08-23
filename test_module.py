@@ -12,15 +12,18 @@ import os
 import requests
 from bs4 import BeautifulSoup
 from PIL import Image
+from openpyxl import load_workbook
 
-json_data = open('json\메인.json', encoding='UTF8').read()
+json_data = open('json/정보통신.json', encoding='UTF8').read()
 XPATH_JSON = json.loads(json_data)
-es = Elasticsearch('https://search-toast-rgeq2lspq63rey535bxmff5m4y.ap-northeast-2.es.amazonaws.com')
+es = Elasticsearch('https://search-toast-test-4gvyyphmm2klzciadaeqkkzkza.ap-northeast-2.es.amazonaws.com')
 S3_ENDPOINT = "https://s3.ap-northeast-2.amazonaws.com/toast-luna-dev/{bucket}/{type}/{filename}"
+END_PAGE = 100
 
 
 class TestModule(Sailer):
     def start(self):
+        self.row = 2
         # result = es.get(index='parsing-json-skku', doc_type='_doc', id=id)
         #
         # if result['found']:
@@ -45,7 +48,7 @@ class TestModule(Sailer):
                 start_page = int(self.rule['start_page'])
                 page_increase = int(self.rule['page_increase'])
 
-                for i in range(start_page, start_page + 100):
+                for i in range(start_page, start_page + END_PAGE):
                     self.go(page_url.format(page=i * page_increase))
                     print("# {} page start".format(i))
                     self.url_based()
@@ -74,7 +77,6 @@ class TestModule(Sailer):
         # print(parsing_result_json_list)
         self.sheet = "contest"
 
-        from openpyxl import load_workbook
         wb = load_workbook('링커리어.xlsx')
         ws = wb.create_sheet(title=self.sheet)
 
@@ -194,10 +196,6 @@ class TestModule(Sailer):
 
             # store in es
             self.store_in_es(parsing_result_json)
-
-            time_interval = [int(n) for n in self.parser['interval'].split('-')]
-            random_time = random.randint(*time_interval)
-            time.sleep(random_time)
 
     def parsing_prop(self, **kwargs):
         prop = kwargs.get('prop', '')
@@ -335,13 +333,25 @@ class TestModule(Sailer):
 
     # es에 저장
     def store_in_es(self, result_json):
+        # if self.store_in_excel(result_json):
+        #     return
+
         check_result = self.check_duplication(result_json)
         if not check_result:
             result_json = self.convert_notice_img_url(result_json)
             result_json.update({"source": self.meta['site_name'], "hit": 0})
-            es.create(index=self.meta['ES_index'], doc_type="_doc", id=uuid.uuid4(), body=result_json)
+            try:
+                es.create(index=self.meta['ES_index'], doc_type="_doc", id=uuid.uuid4(), body=result_json)
+            except Exception as e:
+                error_body = {"url": result_json['url'], "title": result_json['title'], "error_message": str(e)}
+                es.create(index="token_error", doc_type="_doc", id=uuid.uuid4(), body=error_body)
+
         else:
             print("duplicate!")
+
+        time_interval = [int(n) for n in self.parser['interval'].split('-')]
+        random_time = random.randint(*time_interval)
+        time.sleep(random_time)
 
     def check_duplication(self, result_json):
         title = result_json['title']
@@ -358,7 +368,7 @@ class TestModule(Sailer):
             if not filename:
                 filename = url.split('/')[-1]
 
-            filepath = r'C:\Users\nj\PycharmProjects\TestModule\tmp/%s' % filename
+            filepath = r'./tmp/%s' % filename
             res = requests.get(url, stream=True)
             with open(filepath, "wb") as file:
                 for chunk in res:
@@ -406,6 +416,22 @@ class TestModule(Sailer):
         thumbnail_img.save(thumbnail_filepath)
 
         return thumbnail_filepath
+
+    def store_in_excel(self, result_json):
+        print(self.row)
+        wb = load_workbook('notice.xlsx')
+        # ws = wb.create_sheet(title="main notice")
+        ws = wb.active
+
+        ws.cell(row=self.row, column=1, value=result_json['title'])
+        ws.cell(row=self.row, column=2, value=result_json['content_text'])
+        ws.cell(row=self.row, column=3, value=result_json['url'])
+
+        wb.save('notice.xlsx')
+        wb.close()
+        self.row += 1
+
+        return self.row
 
 
 test_module = TestModule()

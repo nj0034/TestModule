@@ -5,24 +5,26 @@ from sailer.sailer import Sailer
 import uuid
 import re
 
-es = Elasticsearch('https://search-toast-rgeq2lspq63rey535bxmff5m4y.ap-northeast-2.es.amazonaws.com')
 DEFAULT_FILEPATH = "C:/Users/nj/PycharmProjects/TestModule/"
+es = Elasticsearch('https://search-toast-test-4gvyyphmm2klzciadaeqkkzkza.ap-northeast-2.es.amazonaws.com')
 
 
 def post_parsing_json():
-    es.delete_by_query(index="parsing-json-skku", body={"query": {"match_all": {}}})
+    index = "parsing-json"
+    es.delete_by_query(index=index, body={"query": {"match_all": {}}})
 
     for root, dirs, files in os.walk('json'):
         for fname in files:
             full_fname = os.path.join(root, fname)
-            print(full_fname)
             json_data = open(full_fname, encoding='UTF8').read()
             XPATH_JSON = json.loads(json_data)
-            site_name = full_fname.split('\\')[1].split('.')[0]
-            es.create(index="parsing-json-skku", doc_type="_doc", id=uuid.uuid4(),
+            site_name = XPATH_JSON['meta']['site_name']
+            print(site_name)
+            es.create(index=index, doc_type="_doc", id=uuid.uuid4(),
                       body={"site_name": site_name, "json": XPATH_JSON})
 
-post_parsing_json()
+
+# post_parsing_json()
 
 
 def post_policy_html():
@@ -46,14 +48,14 @@ def post_policy_html():
 
 def split_policy():
     sailer = Sailer()
-    sailer.go("file:///C:/Users/nj/PycharmProjects/TestModule/new_policy_html/3%ED%92%88%EC%9D%B8%EC%A6%9D%EC%A0%9C.html")
+    sailer.go(
+        "file:///C:/Users/nj/PycharmProjects/TestModule/new_policy_html/3%ED%92%88%EC%9D%B8%EC%A6%9D%EC%A0%9C.html")
     head_html = sailer.xpath('/html/head').get_attribute('innerHTML')
     body_html = sailer.xpath('/html/body').get_attribute('innerHTML')
     titles = re.findall('(<p.*><img src=".*M1x1GvQUIK2qa0SsrWtdb99T\/\/Z".*<\/p>)\s*((.*\s*)*)', body_html)
     print(titles)
     for title in titles:
         print(title)
-
 
     # result_html = "\n".join(["<html><head>", head_html, "</head>", "<body>", *titles, "</body></html>"])
     #
