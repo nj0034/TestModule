@@ -24,7 +24,7 @@ def post_parsing_json():
                       body={"site_name": site_name, "json": XPATH_JSON})
 
 
-# post_parsing_json()
+post_parsing_json()
 
 
 def post_policy_html():

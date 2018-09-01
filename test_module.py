@@ -14,11 +14,12 @@ from bs4 import BeautifulSoup
 from PIL import Image
 from openpyxl import load_workbook
 
-json_data = open('json/정보통신.json', encoding='UTF8').read()
+json_data = open('json/메인.json', encoding='UTF8').read()
 XPATH_JSON = json.loads(json_data)
 es = Elasticsearch('https://search-toast-test-4gvyyphmm2klzciadaeqkkzkza.ap-northeast-2.es.amazonaws.com')
 S3_ENDPOINT = "https://s3.ap-northeast-2.amazonaws.com/toast-luna-dev/{bucket}/{type}/{filename}"
 END_PAGE = 100
+GRAPHQL_ENDPOINT = "https://luna.toast.one/api/v2/"
 
 
 class TestModule(Sailer):
@@ -331,36 +332,6 @@ class TestModule(Sailer):
 
         return result_json
 
-    # es에 저장
-    def store_in_es(self, result_json):
-        # if self.store_in_excel(result_json):
-        #     return
-
-        check_result = self.check_duplication(result_json)
-        if not check_result:
-            result_json = self.convert_notice_img_url(result_json)
-            result_json.update({"source": self.meta['site_name'], "hit": 0})
-            try:
-                es.create(index=self.meta['ES_index'], doc_type="_doc", id=uuid.uuid4(), body=result_json)
-            except Exception as e:
-                error_body = {"url": result_json['url'], "title": result_json['title'], "error_message": str(e)}
-                es.create(index="token_error", doc_type="_doc", id=uuid.uuid4(), body=error_body)
-
-        else:
-            print("duplicate!")
-
-        time_interval = [int(n) for n in self.parser['interval'].split('-')]
-        random_time = random.randint(*time_interval)
-        time.sleep(random_time)
-
-    def check_duplication(self, result_json):
-        title = result_json['title']
-        source = self.meta['site_name']
-        query_body = {"query": {"bool": {"must": [{"term": {"title.keyword": title}}, {"term": {"source": source}}]}}}
-        result = es.search(index=self.meta['ES_index'], body=query_body)
-
-        return result['hits']['hits']
-
     def download_to_s3(self, **kwargs):
         filename = kwargs.get('filename', '')
         url = kwargs.get('url', '')
@@ -389,6 +360,59 @@ class TestModule(Sailer):
             return s3_url
         except:
             return None
+
+    def store_in_db(self, result_json):
+        result_json.update({"source": self.meta['site_name']})
+        headers = {"Content-Type": "application/graphql"}
+        data = """
+        mutation {{
+        createNotice(
+        title: "{title}",
+        createdDatetime: "{created_datetime}",
+        contentText: "{content_text}",
+            contentHtml: "{content_HTML}",
+            url: "{url}",
+            source: "{source}"
+            attaches: {attach},
+            id
+            title
+          }}
+        }}""".format(**result_json).encode('utf8')
+        print(data)
+        result = requests.post(GRAPHQL_ENDPOINT, data=data, headers=headers)
+        print(result.text)
+
+    # es에 저장
+
+    def store_in_es(self, result_json):
+        self.store_in_db(result_json)
+        # if self.store_in_excel(result_json):
+        #     return
+
+        check_result = self.check_duplication(result_json)
+        if not check_result:
+            result_json = self.convert_notice_img_url(result_json)
+            result_json.update({"source": self.meta['site_name'], "hit": 0})
+            try:
+                es.create(index=self.meta['ES_index'], doc_type="_doc", id=uuid.uuid4(), body=result_json)
+            except Exception as e:
+                error_body = {"url": result_json['url'], "title": result_json['title'], "error_message": str(e)}
+                es.create(index="token_error", doc_type="_doc", id=uuid.uuid4(), body=error_body)
+
+        else:
+            print("duplicate!")
+
+        time_interval = [int(n) for n in self.parser['interval'].split('-')]
+        random_time = random.randint(*time_interval)
+        time.sleep(random_time)
+
+    def check_duplication(self, result_json):
+        title = result_json['title']
+        source = self.meta['site_name']
+        query_body = {"query": {"bool": {"must": [{"term": {"title.keyword": title}}, {"term": {"source": source}}]}}}
+        result = es.search(index=self.meta['ES_index'], body=query_body)
+
+        return result['hits']['hits']
 
     @staticmethod
     def combine_url_with_params(param_regex, href_list, base_url):
