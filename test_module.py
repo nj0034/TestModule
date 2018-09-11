@@ -1,4 +1,6 @@
 import uuid
+from datetime import timedelta
+
 from sailer.sailer import Sailer
 from sailer.utils import *
 import random
@@ -14,17 +16,20 @@ from bs4 import BeautifulSoup
 from PIL import Image
 from openpyxl import load_workbook
 
-json_data = open('json/메인.json', encoding='UTF8').read()
+json_data = open('json/링커리어.json', encoding='UTF8').read()
 XPATH_JSON = json.loads(json_data)
 es = Elasticsearch('https://search-toast-test-4gvyyphmm2klzciadaeqkkzkza.ap-northeast-2.es.amazonaws.com')
 S3_ENDPOINT = "https://s3.ap-northeast-2.amazonaws.com/toast-luna-dev/{bucket}/{type}/{filename}"
 END_PAGE = 100
-GRAPHQL_ENDPOINT = "https://luna.toast.one/api/v2/"
+# GRAPHQL_ENDPOINT = "https://luna.toast.one/api/v2/"
+NOTICE_ENDPOINT = "http://127.0.0.1:8000/notice/store"
+ACTIVITY_ENDPOINT = "http://127.0.0.1:8000/activity/store"
 
 
 class TestModule(Sailer):
     def start(self):
-        self.row = 2
+        self.count = 0
+        # self.row = 2
         # result = es.get(index='parsing-json-skku', doc_type='_doc', id=id)
         #
         # if result['found']:
@@ -64,35 +69,36 @@ class TestModule(Sailer):
                 time.sleep(1)
                 self.xpath(r'//*[@id="bar-sorter"]/div/ul/li[4]/label').click()
 
-                for i in range(20):
+                for i in range(5):
                     print("down")
                     self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                     time.sleep(2)
-                self.scroll_down()
+
+                self.url_based()
 
             else:
                 pass
 
-    def scroll_down(self):
+    # def scroll_down(self):
         # parsing_result_json_list = self.parsing_title_url()
         # print(parsing_result_json_list)
-        self.sheet = "contest"
-
-        wb = load_workbook('링커리어.xlsx')
-        ws = wb.create_sheet(title=self.sheet)
-
-        elements = self.driver.find_elements_by_class_name('wrapper_content_text')
-
-        for i, element in enumerate(elements):
-            result = re.compile(r'(.*)\s조회\s(\d+)회\s+댓글 (\d+)개').search(element.text)
-            print(result.group(1), result.group(2), result.group(3))
-            ws.cell(row=i + 2, column=1, value=result.group(1))
-            ws.cell(row=i + 2, column=2, value=result.group(2))
-            ws.cell(row=i + 2, column=3, value=result.group(3))
-
-        wb.save('링커리어.xlsx')
-        wb.close()
-        self.sheet = "activity"
+        # self.sheet = "contest"
+        #
+        # wb = load_workbook('링커리어.xlsx')
+        # ws = wb.create_sheet(title=self.sheet)
+        #
+        # elements = self.driver.find_elements_by_class_name('wrapper_content_text')
+        #
+        # for i, element in enumerate(elements):
+        #     result = re.compile(r'(.*)\s조회\s(\d+)회\s+댓글 (\d+)개').search(element.text)
+        #     print(result.group(1), result.group(2), result.group(3))
+        #     ws.cell(row=i + 2, column=1, value=result.group(1))
+        #     ws.cell(row=i + 2, column=2, value=result.group(2))
+        #     ws.cell(row=i + 2, column=3, value=result.group(3))
+        #
+        # wb.save('링커리어.xlsx')
+        # wb.close()
+        # self.sheet = "activity"
 
     def next_button(self):
         in_prop_list = self.props.keys()
@@ -102,10 +108,6 @@ class TestModule(Sailer):
         while (True):
             parsing_result_json_list = [{"url": self.current_url}]
             self.parsing_in_props(in_prop_list, parsing_result_json_list)
-            # print(parsing_result_json_list)
-            #
-            # # es에 parsing_result_json_list 저장(top 글이면 저장 안함)
-            # self.store_in_es(parsing_result_json_list[0])
 
             next_button_url = self.xpath(self.rule['next_button_xpath']).get_attribute('href')
             if next_button_url:
@@ -168,7 +170,9 @@ class TestModule(Sailer):
 
     def parsing_in_props(self, in_prop_list, parsing_result_json_list):
         for parsing_result_json in parsing_result_json_list:
-            self.go(parsing_result_json['url'])
+            url = parsing_result_json['url']
+            print(url)
+            self.go(url)
             for in_prop in in_prop_list:
                 regex = self.props[in_prop].get('regex')
                 class_name = self.props[in_prop].get('class_name')
@@ -179,7 +183,7 @@ class TestModule(Sailer):
                 # 정규표현식
                 if regex:
                     if xpath:
-                        html = self.xpath(xpath).get_attribute('innerHTML')
+                        html = self.xpath(xpath).get_attribute('outerHTML')
                     else:
                         html = self.driver.find_element_by_class_name(html_class_name).get_attribute('innerHTML')
                     in_prop_json = self.parsing_regex_prop(in_prop, regex, html)
@@ -196,7 +200,10 @@ class TestModule(Sailer):
                 parsing_result_json.update(in_prop_json)
 
             # store in es
-            self.store_in_es(parsing_result_json)
+            # self.store_in_es(parsing_result_json)
+
+            # store in django db
+            self.store_in_db(parsing_result_json)
 
     def parsing_prop(self, **kwargs):
         prop = kwargs.get('prop', '')
@@ -222,7 +229,7 @@ class TestModule(Sailer):
             if prop_type == 'content':
                 prop_json = {
                     "content_text": web_element.text,
-                    "content_HTML": web_element.get_attribute('innerHTML'),
+                    "content_html": web_element.get_attribute('innerHTML'),
                 }
 
             elif prop_type == 'date':
@@ -236,7 +243,22 @@ class TestModule(Sailer):
 
                 format = prop_info['format']
                 date = convert_datetime(date, format, '%Y-%m-%d %H:%M:%S')
-                prop_json = {"created_datetime": date}
+                prop_json = {prop: date}
+
+            elif prop_type == 'dday':
+                str_end_date = web_element.text
+                end_date = str_end_date.split('-')[1]
+
+                if end_date.isdigit():
+                    end_datetime = datetime.now().date() + timedelta(int(end_date))
+                elif end_date == prop_info['dday_text']:
+                    end_datetime = datetime.now().date()
+                else:
+                    end_datetime = None
+
+                if end_datetime:
+                    end_datetime = end_datetime.strftime('%Y-%m-%d %H:%M:%S')
+                    prop_json = {prop: end_datetime}
 
             elif prop_type == 'image':
                 img_url_list = [web_element.get_attribute('src') for web_element in web_elements if web_element]
@@ -252,7 +274,7 @@ class TestModule(Sailer):
                 poster_url = web_element.get_attribute(attr)
                 poster = self.download_to_s3(bucket=self.bucket, type="poster", filename=uuid.uuid4(), url=poster_url)
 
-                prop_json = {"poster": poster, "thumbnail": "_".join([poster, "thumbnail"])}
+                prop_json = {"poster_url": poster, "thumbnail_url": "_".join([poster, "thumbnail"])}
 
             elif prop_type == 'file':
                 attach_name_list = list()
@@ -296,39 +318,52 @@ class TestModule(Sailer):
         return prop_json
 
     def parsing_regex_prop(self, prop, regex, html):
-        prop_data = re.compile(regex).search(html).group(1)
-
-        if self.props[prop]['type'] == 'date':
-            format = self.props[prop]['format']
-            prop_data = convert_datetime(prop_data, format, '%Y-%m-%d %H:%M:%S')
-
-        prop_json = {prop: prop_data}
+        prop_data = re.compile(regex).search(html)
+        if prop_data:
+            prop_data = prop_data.group(1)
+        else:
+            print(prop, "has no element")
+            return {}
 
         if self.props[prop]['type'] == 'poster':
             poster = self.download_to_s3(bucket=self.bucket, type="poster", filename=uuid.uuid4(), url=prop_data)
-            prop_json = {"poster": poster, "thumbnail": "_".join([poster, "thumbnail"])}
+            prop_json = {"poster_url": poster, "thumbnail_url": "_".join([poster, "thumbnail"])}
+
+        elif self.props[prop]['type'] == 'image':
+            prop_datas = re.findall(regex, html)
+            prop_json = {"image_url_list": prop_datas}
+
+        else:
+            if self.props[prop]['type'] == 'date':
+                format = self.props[prop]['format']
+                prop_data = convert_datetime(prop_data, format, '%Y-%m-%d %H:%M:%S')
+
+            prop_json = {prop: prop_data}
 
         print(prop_json)
         return prop_json
 
     def convert_notice_img_url(self, result_json):
-        image_url_list = result_json.get('image_url_list', '')
+        image_url_list = result_json.get('image_url_list')
+
         if image_url_list:
+            del result_json['image_url_list']
+
             filename = str(uuid.uuid4())
             img_s3_url_list = [
                 self.download_to_s3(bucket=self.bucket, type="image", filename="_".join([filename, str(i)]),
                                     url=img_url) for i, img_url in enumerate(image_url_list)]
 
-            str_html = result_json['content_HTML']
+            str_html = result_json['content_html']
             str_html = str_html.replace('&amp;', '&')
             html = BeautifulSoup(str_html, "html.parser")
             img_src_list = [img.get('src') for img in html.find_all('img')]
 
             for img_src, img_s3_url in zip(img_src_list, img_s3_url_list):
-                str_html = str_html.replace(img_src, img_s3_url)
+                if img_src and img_s3_url:
+                    str_html = str_html.replace(img_src, img_s3_url)
 
-            result_json['content_HTML'] = str_html
-            del result_json['image_url_list']
+            result_json['content_html'] = str_html
 
         return result_json
 
@@ -358,34 +393,33 @@ class TestModule(Sailer):
 
             os.remove(filepath)
             return s3_url
-        except:
+
+        except Exception as e:
+            print(str(e))
             return None
+
+    # django db 에 저장
 
     def store_in_db(self, result_json):
         result_json.update({"source": self.meta['site_name']})
-        headers = {"Content-Type": "application/graphql"}
-        data = """
-        mutation {{
-        createNotice(
-        title: "{title}",
-        createdDatetime: "{created_datetime}",
-        contentText: "{content_text}",
-            contentHtml: "{content_HTML}",
-            url: "{url}",
-            source: "{source}"
-            attaches: {attach},
-            id
-            title
-          }}
-        }}""".format(**result_json).encode('utf8')
-        print(data)
-        result = requests.post(GRAPHQL_ENDPOINT, data=data, headers=headers)
+        result_json = self.convert_notice_img_url(result_json)
+
+        if not result_json.get('attach'):
+            result_json['attach'] = list()
+        type = self.meta['type']
+        if type == "공지사항":
+            result = requests.post(NOTICE_ENDPOINT, json=result_json)
+        else:
+            result = requests.post(ACTIVITY_ENDPOINT, json=result_json)
         print(result.text)
+
+        self.count += 1
+        if self.count == 5:
+            quit()
 
     # es에 저장
 
     def store_in_es(self, result_json):
-        self.store_in_db(result_json)
         # if self.store_in_excel(result_json):
         #     return
 

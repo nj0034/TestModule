@@ -26,8 +26,7 @@
       },
       "title": {
         "type": "text",
-        "html_class_name": "et_vars",
-        "regex": "제목.*\\s*<td>(.*?)<\/td>",
+        "class_name": "np_18px",
         "position": "in"
       },
       "host": {
@@ -48,12 +47,6 @@
         "html_class_name": "et_vars",
         "regex": "모집마감.*\\s*<td>(.*?)<\/td>",
         "format": "%Y-%m-%d",
-        "position": "in"
-      },
-      "created_datetime": {
-        "type": "date",
-        "class_name": "date",
-        "format": "%Y.%m.%d %H:%M",
         "position": "in"
       },
       "content": {

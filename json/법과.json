@@ -39,16 +39,6 @@
                 "format": "%Y-%m-%d",
                 "position": "in"
             },
-            "writer": {
-                "type": "text",
-                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[1]",
-                "position": "in"
-            },
-            "hit": {
-                "type": "text",
-                "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td[3]",
-                "position": "in"
-            },
             "content": {
                 "type": "content",
                 "xpath": "//*[@id=\"article_text\"]",

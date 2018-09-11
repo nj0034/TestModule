@@ -38,11 +38,6 @@
                 "format": "%Y-%m-%d",
                 "position": "in"
             },
-            "writer": {
-                "type": "text",
-                "xpath": "//*[@id=\"writer\"]",
-                "position": "in"
-            },
             "content": {
                 "type": "content",
                 "xpath": "//*[@id=\"content\"]",

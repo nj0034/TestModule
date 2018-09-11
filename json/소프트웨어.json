@@ -17,8 +17,8 @@
     },
 
     "rule": {
-        "page_url": "http://cs.skku.edu/open/notice/list",
-        "top_article_xpath": "//*[@id=\"boardList\"]/tbody/tr[1]/td[3]",
+        "page_url": "http://cs.skku.edu/news/notice/list",
+        "top_article_xpath": "//*[@id=\"boardList\"]/tbody/tr[1]",
         "next_button_xpath": "//*[@id=\"next\"]",
         "start_page": 0,
         "page_increase": 1,
@@ -32,11 +32,6 @@
                 "type": "date",
                 "xpath": "//*[@id=\"time\"]",
                 "format": "%Y-%m-%d",
-                "position": "in"
-            },
-            "writer": {
-                "type": "text",
-                "xpath": "//*[@id=\"name\"]",
                 "position": "in"
             },
             "content": {

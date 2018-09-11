@@ -31,64 +31,45 @@
       },
       "host": {
         "type": "text",
-        "xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[2]/div[2]/table/tbody/tr[2]/td",
-        "position": "in"
-      },
-      "start_datetime": {
-        "type": "date",
-        "xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[2]/div[2]/table/tbody",
-        "regex": "(\\d+\\.\\d+\\.\\d+)\\s~",
-        "format": "%Y.%m.%d",
+        "class_name": "activity-sum-title",
         "position": "in"
       },
       "end_datetime": {
-        "type": "date",
-        "xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[2]/div[2]/table/tbody",
-        "regex": "~\\s(\\d+\\.\\d+\\.\\d+)",
-        "format": "%Y.%m.%d",
-        "position": "in"
-      },
-      "created_datetime": {
-        "type": "date",
-        "xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[1]/div/div/span[3]",
-        "format": "%Y.%m.%d",
-        "attach": "20",
+        "type": "dday",
+        "class_name": "activity-close",
+        "dday_text": "오늘마감",
         "position": "in"
       },
       "content": {
         "type": "content",
-        "xpath": "//*[@id=\"Main\"]/section[2]/div/div/ul",
+        "class_name": "activity_detail_text",
         "position": "in"
       },
       "target": {
         "type": "text",
-        "xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[2]/div[2]/table/tbody",
-        "regex": "대상.*\\s*<td>(.*)</td>",
+        "xpath": "//*[@id=\"activity-container\"]/div[1]/div[5]/div[2]/div[1]/div[2]/dl[1]/dd",
         "position": "in"
       },
       "benefit": {
         "type": "text",
-        "xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[2]/div[2]/table/tbody",
-        "regex": "특전.*\\s*<td>(.*)</td>",
+        "xpath": "//*[@id=\"activity-container\"]/div[1]/div[5]/div[2]/div[1]/div[2]/dl[4]/dd",
+        "position": "in"
+      },
+      "prefer": {
+        "type": "text",
+        "xpath": "//*[@id=\"activity-container\"]/div[1]/div[5]/div[2]/div[1]/div[2]/dl[3]/dd",
         "position": "in"
       },
       "poster": {
         "type": "poster",
-        "url": "href",
-        "xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[2]/div[1]/div/a",
+        "url": "src",
+        "xpath": "//*[@id=\"activity-container\"]/div[1]/div[3]/div/img",
         "position": "in"
       },
       "home_url": {
         "type": "url",
-        "xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[2]/div[2]/table/tbody/tr[9]/td/a",
+        "class_name": "homepage-url",
         "position": "in"
-      },
-      "attach": {
-        "type": "file",
-        "xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[2]/div[2]/table/tbody/tr[10]/td/p/a",
-        "position": "in",
-        "name_regex": "<a.*>(.*)<\/a>",
-        "HTML_xpath": "//*[@id=\"Main\"]/section[2]/div/div/div[2]/div[2]/table/tbody/tr[10]/td/p/a"
       }
     },
     "post_processing": {}

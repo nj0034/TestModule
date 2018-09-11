@@ -15,25 +15,25 @@
     "interval": "5-10"
   },
   "rule": {
-    "page_url": "https://dorm.skku.edu/skku_seoul/notice/notice_all.jsp?mode=list&search%3Asearch_val%3Asearch_or=&search%3Asearch_key%3Asearch_or=article_title&search%3Asearch_category%3Acategory=104&search%3Asearch_key2%3Asearch_or=article_text&board_no=78&pager.offset={page}0",
+    "page_url": "https://dorm.skku.edu/skku_seoul/notice/notice_all.jsp?mode=list&board_no=78&pager.offset={page}0",
     "start_page": 0,
     "page_increase": 1,
     "properties": {
       "title_url": {
         "type": "url",
-        "xpath": "//*[@id=\"item_body\"]/div[3]/div/div[2]/div[1]/div[2]/div[2]/div/div[2]/table/tbody/tr[*]/td[3]/a",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[2]/table/tbody/tr[*]/td[3]/a",
         "position": "",
         "param_regex": "",
         "base_url": ""
       },
       "title": {
         "type": "text",
-        "xpath": "//*[@id=\"item_body\"]/div[3]/div/div[2]/div[1]/div[2]/div[2]/div/div[1]/table/tbody/tr[1]/td",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[1]/td",
         "position": "in"
       },
       "created_datetime": {
         "type": "date",
-        "xpath": "//*[@id=\"item_body\"]/div[3]/div/div[2]/div[1]/div[2]/div[2]/div/div[1]/table/tbody/tr[2]/td/span[4]",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[2]/td/span[4]",
         "format": "%Y-%m-%d",
         "position": "in"
       },
@@ -49,12 +49,12 @@
       },
       "attach": {
         "type": "file",
-        "xpath": "//*[@id=\"item_body\"]/div[3]/div/div[2]/div[1]/div[2]/div[2]/div/div[1]/table/tbody/tr[3]/td/div[*]/a",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[3]/td/div[*]/a",
         "position": "in",
         "base_url": "",
         "param_regex": "",
         "name_regex": "title=\"(.*) 다운로드\"",
-        "HTML_xpath": "//*[@id=\"item_body\"]/div[3]/div/div[2]/div[1]/div[2]/div[2]/div/div[1]/table/tbody/tr[3]/td"
+        "HTML_xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/table/tbody/tr[3]/td"
       }
     },
     "post_processing": {

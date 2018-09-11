@@ -38,11 +38,6 @@
                 "format": "%Y-%m-%d %p %I:%M:%S",
                 "position": "in"
             },
-            "writer": {
-                "type": "text",
-                "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[2]/td[3]",
-                "position": "in"
-            },
             "content": {
                 "type": "content",
                 "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[8]/td",
