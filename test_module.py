@@ -16,19 +16,20 @@ from bs4 import BeautifulSoup
 from PIL import Image
 from openpyxl import load_workbook
 
-json_data = open('json/링커리어.json', encoding='UTF8').read()
+json_data = open('json/메인.json', encoding='UTF8').read()
 XPATH_JSON = json.loads(json_data)
 es = Elasticsearch('https://search-toast-test-4gvyyphmm2klzciadaeqkkzkza.ap-northeast-2.es.amazonaws.com')
 S3_ENDPOINT = "https://s3.ap-northeast-2.amazonaws.com/toast-luna-dev/{bucket}/{type}/{filename}"
-END_PAGE = 100
-# GRAPHQL_ENDPOINT = "https://luna.toast.one/api/v2/"
+END_PAGE = 1
+COUNT = 1
 NOTICE_ENDPOINT = "http://127.0.0.1:8000/notice/store"
 ACTIVITY_ENDPOINT = "http://127.0.0.1:8000/activity/store"
+URL = "https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=view&articleNo=66641&article.offset=0&articleLimit=10"
+
 
 
 class TestModule(Sailer):
     def start(self):
-        self.count = 0
         # self.row = 2
         # result = es.get(index='parsing-json-skku', doc_type='_doc', id=id)
         #
@@ -50,6 +51,7 @@ class TestModule(Sailer):
             page_url_list = [self.rule['page_url']]
 
         for page_url in page_url_list:
+            self.count = 0
             if method == 'url_based':
                 start_page = int(self.rule['start_page'])
                 page_increase = int(self.rule['page_increase'])
@@ -79,6 +81,9 @@ class TestModule(Sailer):
             else:
                 pass
 
+        self.close()
+        quit()
+
     # def scroll_down(self):
         # parsing_result_json_list = self.parsing_title_url()
         # print(parsing_result_json_list)
@@ -105,7 +110,7 @@ class TestModule(Sailer):
         self.wait_xpath(self.rule['top_article_xpath'])
         self.xpath(self.rule['top_article_xpath']).click()
 
-        while (True):
+        while self.count < COUNT:
             parsing_result_json_list = [{"url": self.current_url}]
             self.parsing_in_props(in_prop_list, parsing_result_json_list)
 
@@ -136,7 +141,11 @@ class TestModule(Sailer):
                 parsing_result_json.update(out_prop_json)
 
         # 내부 prop 파싱 후 es에 저장
-        self.parsing_in_props(in_prop_list, parsing_result_json_list)
+        try:
+            self.parsing_in_props(in_prop_list, parsing_result_json_list)
+
+        except Exception as e:
+            print("Parsing in_props error : ", e)
 
     def parsing_title_url(self):
         title_url_json = self.props['title_url']
@@ -171,6 +180,11 @@ class TestModule(Sailer):
     def parsing_in_props(self, in_prop_list, parsing_result_json_list):
         for parsing_result_json in parsing_result_json_list:
             url = parsing_result_json['url']
+
+            # test URL
+            if URL:
+                url = URL
+
             print(url)
             self.go(url)
             for in_prop in in_prop_list:
@@ -203,7 +217,9 @@ class TestModule(Sailer):
             # self.store_in_es(parsing_result_json)
 
             # store in django db
-            self.store_in_db(parsing_result_json)
+            close_signal = self.store_in_db(parsing_result_json)
+            if close_signal:
+                break
 
     def parsing_prop(self, **kwargs):
         prop = kwargs.get('prop', '')
@@ -259,6 +275,8 @@ class TestModule(Sailer):
                 if end_datetime:
                     end_datetime = end_datetime.strftime('%Y-%m-%d %H:%M:%S')
                     prop_json = {prop: end_datetime}
+                else:
+                    prop_json = {}
 
             elif prop_type == 'image':
                 img_url_list = [web_element.get_attribute('src') for web_element in web_elements if web_element]
@@ -414,8 +432,12 @@ class TestModule(Sailer):
         print(result.text)
 
         self.count += 1
-        if self.count == 5:
-            quit()
+        if self.count >= COUNT:
+            close_signal = True
+
+            return close_signal
+            # self.close()
+            # quit()
 
     # es에 저장
 
