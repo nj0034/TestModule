@@ -16,16 +16,15 @@ from bs4 import BeautifulSoup
 from PIL import Image
 from openpyxl import load_workbook
 
-json_data = open('json/메인.json', encoding='UTF8').read()
+json_data = open('json/학부.json', encoding='UTF8').read()
 XPATH_JSON = json.loads(json_data)
 es = Elasticsearch('https://search-toast-test-4gvyyphmm2klzciadaeqkkzkza.ap-northeast-2.es.amazonaws.com')
 S3_ENDPOINT = "https://s3.ap-northeast-2.amazonaws.com/toast-luna-dev/{bucket}/{type}/{filename}"
-END_PAGE = 1
-COUNT = 1
+END_PAGE = 10
+COUNT = 50
 NOTICE_ENDPOINT = "http://127.0.0.1:8000/notice/store"
 ACTIVITY_ENDPOINT = "http://127.0.0.1:8000/activity/store"
-URL = "https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=view&articleNo=66641&article.offset=0&articleLimit=10"
-
+URL = ""
 
 
 class TestModule(Sailer):

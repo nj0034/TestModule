@@ -1,65 +1,64 @@
 {
-    "meta": {
-        "site_name": "의과대학",
-        "site_url": "http://www.skkumed.ac.kr/notice.asp?keyword=&startpage=1&bcode=nt&pg=1",
-        "site_type": "html",
-        "type": "공지사항","ES_index": "skku-notice",
-        "version": "1"
+  "meta": {
+    "site_name": "의과대학",
+    "site_url": "http://www.skkumed.ac.kr/community_notice.asp",
+    "site_type": "html",
+    "type": "공지사항",
+    "ES_index": "skku-notice",
+    "version": "1"
+  },
+  "parser": {
+    "method": "url_based",
+    "version": "1",
+    "period": "15m",
+    "stop": "size",
+    "interval": "5-10"
+  },
+  "rule": {
+    "page_url": "http://www.skkumed.ac.kr/community_notice.asp?bcode=nt&pg={page}",
+    "start_page": 1,
+    "page_increase": 1,
+    "properties": {
+      "title_url": {
+        "type": "url",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div/ul/li[*]/dl/dt/a",
+        "position": "",
+        "param_regex": "",
+        "base_url": ""
+      },
+      "title": {
+        "type": "text",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/div/div[1]/h4",
+        "position": "in"
+      },
+      "created_datetime": {
+        "type": "date",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/div/div[1]/ul/li[3]",
+        "format": "%Y-%m-%d %p %I:%M:%S",
+        "position": "in"
+      },
+      "content": {
+        "type": "content",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/div/div[2]",
+        "position": "in"
+      },
+      "img": {
+        "type": "image",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/div/div[2]",
+        "regex": "<img.*?src=\"(.*?)\"",
+        "position": "in"
+      },
+      "attach": {
+        "type": "file",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/div/ul/li[*]/a",
+        "position": "in",
+        "base_url": "",
+        "param_regex": "",
+        "name_regex": "<a.*>\\s*(.*)\\s*<\/a>",
+        "HTML_xpath": "//*[@id=\"jwxe_main_content\"]/div/div[1]/div/ul"
+      }
     },
-
-    "parser": {
-        "method": "url_based",
-        "version": "1",
-        "period": "15m",
-        "stop": "size",
-        "interval": "5-10"
-    },
-
-    "rule": {
-        "page_url": "http://www.skkumed.ac.kr/notice.asp?keyword=&startpage=1&bcode=nt&pg={page}",
-        "start_page": 1,
-        "page_increase": 1,
-        "properties": {
-            "title_url": {
-                "type": "url",
-                "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[4]/td/table/tbody/tr[*]/td[3]/div/a[1]",
-                "position": "",
-                "param_regex": "",
-                "base_url": ""
-            },
-            "title": {
-                "type": "text",
-                "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[2]/td[3]",
-                "position": "in"
-            },
-            "created_datetime": {
-                "type": "date",
-                "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[4]/td[7]/div",
-                "format": "%Y-%m-%d %p %I:%M:%S",
-                "position": "in"
-            },
-            "content": {
-                "type": "content",
-                "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[8]/td",
-                "position": "in"
-            },
-            "img": {
-                "type": "image",
-                "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[8]/td/img",
-                "position": "in"
-            },
-            "attach": {
-                "type": "file",
-                "xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[6]/td[3]/a",
-                "position": "in",
-                "base_url": "",
-                "param_regex": "",
-                "name_regex": "<b>(.*)\\s&nbsp",
-                "HTML_xpath": "/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[6]/td[3]"
-            }
-        },
-        "post_processing": {
-
-        }
+    "post_processing": {
     }
+  }
 }

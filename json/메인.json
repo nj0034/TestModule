@@ -42,7 +42,7 @@
       },
       "img": {
         "type": "image",
-        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div/div/div/table[1]/tbody/tr/td/dl/dd/img[*]",
+        "xpath": "//*[@id=\"jwxe_main_content\"]/div/div/div/div/table[1]/tbody/tr/td/dl/dd/img",
         "position": "in"
       },
       "attach": {
